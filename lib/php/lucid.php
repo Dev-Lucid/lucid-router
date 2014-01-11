@@ -261,7 +261,7 @@ class lucid
 		$out	 = 'type:'.$type.'|sev:'.$severity.'|ip:'.$ip.'|sess:'.$session.'|'.$string_to_log."\n";
 		
 		#error_log($out,3,$lucid->config['log-file']);
-		error_log($out,3);
+		error_log($out);
 	}
 }
 
