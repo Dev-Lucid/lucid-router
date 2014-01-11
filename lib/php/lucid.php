@@ -259,7 +259,8 @@ class lucid
 		$string_to_log = strtr($string_to_log,"\n",' ');
 		
 		$out  = 'type:'.$type.'|';
-		if(isset($_SERVER['HTTP_HOST']) and $_SERVER['HTTP_HOST'] != '127.0.0.1')
+		
+		if(isset($_SERVER['HTTP_HOST']) and !strstr($_SERVER['HTTP_HOST'],'127.0.0.1'))
 		{
 			$out .= 'sev:'.$severity.'|ip:'.$ip.'|sess:'.$session.'|';
 		}
