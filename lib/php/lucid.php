@@ -105,7 +105,7 @@ class lucid
                 $com_parts  = explode('/',$command);
                 $controller = $com_parts[0];
                 $view = (isset($com_parts[1]))?$com_parts[1]:'default_view';
-                $obj  = lucid_controller::$controller();
+                $obj  = lucid_controller::instantiate($controller);
                 $obj->$view();
                 
                 $content = lucid::get_clean_buffer();

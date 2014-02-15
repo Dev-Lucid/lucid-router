@@ -2,7 +2,7 @@
 
 class lucid_controller
 {
-	public static function __callStatic($controller,$params)
+	public static function instantiate($controller,$params=array())
 	{
 		$class_name = 'lucid_controller__'.$controller;
 		
@@ -36,6 +36,7 @@ class lucid_controller
 	{
 		if(file_exists('controllers/'.$this->name.'/views/'.$view_name.'.php'))
 		{
+			lucid::log('loaded view '.$view_name);
 			include('controllers/'.$this->name.'/views/'.$view_name.'.php');
 		}
 		else
