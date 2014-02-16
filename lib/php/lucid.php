@@ -53,6 +53,7 @@ class lucid
 		{
 			$lucid = new lucid();
 			include(__DIR__.'/lucid_controller.php');
+			include(__DIR__.'/lucid_navstate.php');
 			/*
 			include(__DIR__.'/lucid_validator.php');
 			include(__DIR__.'/lucid_jserror.php');
@@ -86,6 +87,7 @@ class lucid
         }
         
         //lucid_db_adaptor::init();
+        lucid::log($_REQUEST);
         
 		lucid::log('init complete');
 	}
