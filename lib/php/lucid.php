@@ -9,14 +9,6 @@ class lucid
 	{
 		$this->config = array(
             'send-errors'=>true,
-            'db'=>array(
-				'type'=>'mysql',
-				'hostname'=>'localhost',
-				'database'=>'test',
-				'username'=>'root',
-				'password'=>'root',
-            ),
-            'model-dir'=>__DIR__.'/../../../../db/models/',
             'log-file'=>'/tmp/debug.log',
             'default-content-mode'=>'replace',
             'default-content-position'=>'#center',
