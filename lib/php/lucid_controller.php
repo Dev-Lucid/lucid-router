@@ -34,6 +34,7 @@ class lucid_controller
 	
 	public function load_view($view_name)
 	{
+		global $lucid;
 		if(file_exists('controllers/'.$this->name.'/views/'.$view_name.'.php'))
 		{
 			lucid::log('loaded view '.$view_name);
