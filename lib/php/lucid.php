@@ -9,9 +9,9 @@ class lucid
 	{
 		$this->config = array(
             'send-errors'=>true,
-            'log-file'=>'/tmp/debug.log',
             'default-content-mode'=>'replace',
             'default-content-position'=>'#center',
+        	'log-handle'=>null,
 		);
 		$this->validators = array();
 		$this->paths      = array();
@@ -46,16 +46,12 @@ class lucid
 			$lucid = new lucid();
 			include(__DIR__.'/lucid_controller.php');
 			include(__DIR__.'/lucid_navstate.php');
-			/*
-			include(__DIR__.'/lucid_validator.php');
-			include(__DIR__.'/lucid_jserror.php');
-			include(__DIR__.'/lucid_model_sqlclause.php');
-			include(__DIR__.'/lucid_model_arrayaccess.php');
-			include(__DIR__.'/lucid_model_iterator.php');
-			include(__DIR__.'/lucid_model.php');
-			include(__DIR__.'/lucid_db_adaptor.php');
-            include(__DIR__.'/lucid_utility.php');
-            */
+		}
+
+		# apply the config
+		foreach($config as $setting=>$value)
+		{
+			$lucid->config[$setting] = $value;
 		}
         
         # startup misc things by default
@@ -237,31 +233,40 @@ class lucid
 			exit("\n");
 		}
 	}
-	
+
 	public static function log($string_to_log,$severity=1,$type='debug')
 	{
 		global $lucid;
 		
-		$ip	  = (isset($_SERVER['REMOTE_ADDR']))?$_SERVER['REMOTE_ADDR']:'127.0.0.1';
+		# format some basic info.
+		$ip	  = str_pad(((isset($_SERVER['REMOTE_ADDR']))?$_SERVER['REMOTE_ADDR']:'127.0.0.1'),15,' ');
 		$session = (session_id() == '')?'[nosession]':session_id();
 		
+		# tidy up the string a bit
 		if(is_array($string_to_log))
 		{
 			$string_to_log = print_r($string_to_log,true);
 		}
-		
 		$string_to_log = strtr($string_to_log,"\n",' ');
 		
-		$out  = 'type:'.$type.'|';
-		
-		if(isset($_SERVER['HTTP_HOST']) and !strstr($_SERVER['HTTP_HOST'],'127.0.0.1'))
-		{
-			$out .= 'sev:'.$severity.'|ip:'.$ip.'|sess:'.$session.'|';
-		}
+		# construct the final string
+		$out  = 'ip:'.$ip.'|sess:'.$session.'|'.'sev:'.$severity.'|';
+		$out .= str_pad('type:'.$type,18,' ').'| ';
 		$out .= $string_to_log."\n";
 		
-		#error_log($out,3,$lucid->config['log-file']);
-		error_log($out);
+		# log either to a specified file, or to the error_log
+		if(isset($lucid->config['log_path']))
+		{
+			if(!isset($lucid->config['log-handle']) or is_null($lucid->config['log-handle']))
+			{
+				$lucid->config['log-handle'] = fopen($lucid->config['log_path'],'a');
+			}
+			fwrite($lucid->config['log-handle'],$out);
+		}
+		else
+		{
+			error_log($out);
+		}
 	}
 }
 
