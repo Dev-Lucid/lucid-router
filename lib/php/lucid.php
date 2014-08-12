@@ -75,9 +75,10 @@ class lucid
         }
         
         //lucid_db_adaptor::init();
-        lucid::log($_REQUEST);
-        
-		lucid::log('init complete');
+       
+       	lucid::log(''); 
+		lucid::log('---------------------------------------------------------------');
+		lucid::log('Parameters: '.print_r($_REQUEST,true));
 	}
     
     # will process everything in the $lucid->commands arrays
@@ -219,7 +220,7 @@ class lucid
 	public static function deinit($emit_json=true)
 	{
 		global $lucid;
-		lucid::log('deinit complete');
+		lucid::log('---------------------------------------------------------------');
 		
 		if($emit_json && __LUCID_ENV__ == 'http')
 		{
