@@ -44,8 +44,9 @@ class lucid
 		if(!is_object($lucid) || get_class($lucid) != 'lucid')
 		{
 			$lucid = new lucid();
-			include(__DIR__.'/lucid_controller.php');
-			include(__DIR__.'/lucid_navstate.php');
+            require(__DIR__.'/lucid_controller.php');
+			require(__DIR__.'/lucid_controller_data_table.php');
+			require(__DIR__.'/lucid_navstate.php');
 		}
 
 		# apply the config
@@ -109,8 +110,12 @@ class lucid
 					);
 				}
             }
-        }
-        
+        } 
+    }
+
+    public function __call($controller,$params)
+    {
+    	return lucid_controller::instantiate($controller);
     }
     
 	private static function place_content($location,$mode,$content)
